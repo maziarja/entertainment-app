@@ -7,8 +7,8 @@ import { useMovies } from "../context/MoviesContext";
 import { useRouter } from "next/navigation";
 
 function SignInForm() {
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("Qwerty123$");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showInvalidEmail, setShowInvalidEmail] = useState(false);
   const [showInvalidPassword, setShowInvalidPassword] = useState(false);
   const { refreshSession } = useMovies();
