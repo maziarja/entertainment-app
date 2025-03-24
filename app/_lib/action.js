@@ -46,7 +46,8 @@ export async function signInWithCredentials(formData) {
   await signIn("credentials", {
     email,
     password,
-    redirectTo: "/",
+    // redirectTo: "/",
+    redirect: false,
   });
 
   return { success: true };
@@ -54,7 +55,8 @@ export async function signInWithCredentials(formData) {
 
 export async function signOutAction() {
   await signOut({
-    redirectTo: "/login",
+    // redirectTo: "/login",
+    redirect: false,
   });
 }
 

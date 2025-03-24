@@ -1,17 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOutAction } from "../_lib/action";
 import Avatar from "./Avatar";
 import { useState } from "react";
 import { useOutsideClick } from "./useOutsideClick";
+import { useMovies } from "../context/MoviesContext";
 
 function Navigation({ session }) {
   const [showSignout, setShowSignout] = useState(false);
   const ref = useOutsideClick(() => setShowSignout(false), false);
   const pathname = usePathname();
-
+  const { refreshSession } = useMovies();
+  const router = useRouter();
   return (
     <div className="bg-semiDarkBlue relative mx-auto flex min-h-14 items-center justify-between md:mx-6 md:mt-6 md:rounded-[10px] lg:mx-0 lg:ml-4 lg:h-[960px] lg:w-[96px] lg:flex-col lg:justify-start">
       <svg
@@ -79,7 +81,14 @@ function Navigation({ session }) {
           ref={ref}
           className="bg-greyishBlue absolute right-6 bottom-[-35%] rounded-[6px] px-2 py-1 text-sm lg:right-4 lg:bottom-[9%]"
         >
-          <button onClick={signOutAction} className="cursor-pointer">
+          <button
+            onClick={() => {
+              signOutAction();
+              refreshSession();
+              router.push("/login");
+            }}
+            className="cursor-pointer"
+          >
             Log out
           </button>
         </div>

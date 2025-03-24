@@ -3,27 +3,31 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signInWithCredentials } from "../_lib/action";
 import toast from "react-hot-toast";
+import { useMovies } from "../context/MoviesContext";
+import { useRouter } from "next/navigation";
 
 function SignInForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("Qwerty123$");
   const [showInvalidEmail, setShowInvalidEmail] = useState(false);
   const [showInvalidPassword, setShowInvalidPassword] = useState(false);
+  const { refreshSession } = useMovies();
 
   const resetForm = () => {
     setEmail("");
     setPassword("");
   };
-
+  const router = useRouter();
   async function handleSignInWithCredentials(formData) {
     const result = await signInWithCredentials(formData);
     setShowInvalidEmail(result?.error?.email);
     setShowInvalidPassword(result?.error?.password);
-
     if (result?.error?.message) {
-      toast.error(result?.error?.message);
+      toast.error("Incorrect email or password. Please try again");
       resetForm();
     }
+    await refreshSession();
+    router.push("/");
   }
 
   return (
